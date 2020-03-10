@@ -2,10 +2,10 @@ import matplotlib.pyplot as plt
 import math
 from values import *
 
-signal = plt.figure(dpi=DPI, figsize=(1080 / DPI, 720 / DPI))
+discrete = plt.figure(dpi=DPI, figsize=(1080 / DPI, 720 / DPI))
 plt.axis([0, T_BUILD, -1, 2])
 
-plt.title('Signal')
+plt.title('Discrete')
 plt.xlabel('t, s')
 plt.ylabel('U, V')
 
@@ -19,8 +19,8 @@ while x <= T_BUILD:
             2 * math.pi * x * FREQUENCY + math.pi * INITIAL_PHASE / 180)
         + BIAS]
     xs += [x]
-    x += 0.000001
+    x += math.pow(SAMPLING, -1)
 
-plt.plot(xs, cos_values, linestyle='solid', label='Signal')
+plt.plot(xs, cos_values, '.', label='discrete')
 
-signal.savefig('signal.png')
+discrete.savefig('discrete.png')
