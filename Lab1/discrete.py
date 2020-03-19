@@ -36,7 +36,15 @@ print("Plotting complete")
 discrete.savefig('discrete.png')
 print("Saving complete")
 
+print("Number of samples = {n_sample}".format(n_sample=len(cos_values)))
+
+print("Zero point = {cos_point_zero}".format(
+    cos_point_zero=AMPLITUDE * math.cos(
+        2 * math.pi * 0 * FREQUENCY + math.pi * INITIAL_PHASE / 180) + BIAS))
+
 print("\nAverage of signal = {average}".format(
     average=sum((cos_values[i] for i in range(0, len(cos_values)))) / len(
         cos_values)))
 print("\n")
+
+
