@@ -35,3 +35,8 @@ print("Plotting complete")
 
 discrete.savefig('discrete.png')
 print("Saving complete")
+
+print("\nAverage of signal = {average}".format(
+    average=sum((cos_values[i] for i in range(0, len(cos_values)))) / len(
+        cos_values)))
+print("\n")
