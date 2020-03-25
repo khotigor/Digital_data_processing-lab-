@@ -1,29 +1,14 @@
-import matplotlib.pyplot as plt
-import math
+"""
+Here we build a part of signal.
+"""
+
+import sys
+
+sys.path.append('../')
 from values import *
+from SignalClass import *
 
-signal = plt.figure(dpi=DPI, figsize=(1080 / DPI, 720 / DPI))
-plt.axis([0, T_BUILD, -1, 2])
 
-plt.title('Signal')
-plt.xlabel('t, s')
-plt.ylabel('U, V')
-
-xs = []
-cos_values = []
-
-x = 0.0
-while x <= T_BUILD:
-    cos_values += [
-        AMPLITUDE * math.cos(
-            2 * math.pi * x * FREQUENCY + math.pi * INITIAL_PHASE / 180)
-        + BIAS]
-    xs += [x]
-    x += 0.000001
-
-plt.plot(xs, cos_values, linestyle='solid', label='Signal')
-print("Plotting complete")
-
-signal.savefig('signal.png')
-print("Saving complete")
-
+signal = Signal(T_MATH, AMPLITUDE, BIAS, FREQUENCY, INITIAL_PHASE, SAMPLING)
+signal.plot_my_signal(DPI, T_BUILD, T_BUILD, "Signal", "t, s", "U, V",
+                         "Signal", "signal", True, False)
