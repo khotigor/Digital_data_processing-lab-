@@ -1,5 +1,6 @@
 import math
-import matplotlib.pyplot as plt
+import random
+
 from functions import *
 
 
@@ -17,15 +18,10 @@ class Signal(object):
         self.sampling = sampling  # sampling of signal
 
     def plot_my_signal(self, dpi, time_math, time_build, name, x_label,
-                       y_label, label, file_name, line_solid, save_to_csv):
+                       y_label, label, file_name, discrete,
+                       noise_ratio_sigma):
         """Method to plot signal"""
-        signal = plt.figure(dpi=dpi, figsize=(1080 / dpi, 720 / dpi))
-        plt.axis([0, time_build, -1, 2])
-
-        plt.title(name)
-        plt.xlabel(x_label)
-        plt.ylabel(y_label)
-
+        plotter_to_work = plotter(dpi, time_build, name, x_label, y_label)
         xs = []
         cos_values = []
 
@@ -35,22 +31,28 @@ class Signal(object):
             new_cos_value = [
                 self.amplitude * math.cos(
                     2 * math.pi * x * self.frequency + math.pi *
-                    self.init_phase / 180) + self.bias]
+                    self.init_phase / 180) + self.bias +
+                random.normalvariate(0, noise_ratio_sigma)]
             data_list.append([x, new_cos_value])
             cos_values.append(new_cos_value)
             xs.append(x)
-            x += math.pow(self.sampling, -1)
-        if line_solid:
+
+            if discrete:
+                x += math.pow(self.sampling, -1)
+            else:
+                x += 0.000001
+
+        if discrete:
+            plt.plot(xs, cos_values, '.', label=label)
+        else:
             plt.plot(xs, cos_values, linestyle='solid', label=label)
             print("Plotting complete")
-        else:
-            plt.plot(xs, cos_values, '.', label=label)
 
-        signal.savefig("{file_name}.png".format(file_name=file_name))
+        plotter_to_work.savefig("{file_name}.png".format(file_name=file_name))
         print("Saving complete")
 
         # should be done normally ...once...
-        if save_to_csv:
+        if discrete:
             write_to_csv("pointsFile", data_list)
             print("Number of samples = {n_sample}".format(
                 n_sample=len(cos_values)))
