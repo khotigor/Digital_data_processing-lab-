@@ -1,8 +1,5 @@
-import math
-import random
-
 from functions import *
-
+from values import *
 
 class Signal(object):
     """It's my signal"""
@@ -16,49 +13,57 @@ class Signal(object):
         self.frequency = frequency  # frequency of signal
         self.init_phase = init_phase  # init_phase of signal
         self.sampling = sampling  # sampling of signal
+        self.xs = None
+        self.cos_values = None
 
-    def plot_my_signal(self, dpi, time_math, time_build, name, x_label,
-                       y_label, label, file_name, discrete,
-                       noise_ratio_sigma):
-        """Method to plot signal"""
-        plotter_to_work = plotter(dpi, time_build, name, x_label, y_label)
+    def count(self, discrete):
         xs = []
         cos_values = []
 
         x = 0.0
-        data_list = [['t', 'u']]
-        while x <= time_math:
-            new_cos_value = [
-                self.amplitude * math.cos(
-                    2 * math.pi * x * self.frequency + math.pi *
-                    self.init_phase / 180) + self.bias +
-                random.normalvariate(0, noise_ratio_sigma)]
-            data_list.append([x, new_cos_value])
+        while x <= self.t_math:
+            new_cos_value = signal_count(x, self.amplitude, self.frequency,
+                                         self.init_phase, self.bias)
             cos_values.append(new_cos_value)
             xs.append(x)
 
             if discrete:
                 x += math.pow(self.sampling, -1)
             else:
-                x += 0.000001
+                # increased accuracy
+                x += math.pow(self.sampling, -1) / 10
 
+        self.xs = xs
+        self.cos_values = cos_values
+
+    def plot_my_signal(self, time_build, name, label, file_name,
+                       discrete):
+        """Method to plot signal"""
+        self.count(discrete)
+        min_for_plot = min(self.cos_values)
+        max_for_lot = max(self.cos_values)
+        plot = plotter(DPI, time_build, name, "t, s", "U, V", min_for_plot,
+                       max_for_lot)
         if discrete:
-            plt.plot(xs, cos_values, '.', label=label)
+            # plot just points
+            plt.plot(self.xs, self.cos_values, '.', label=label)
         else:
-            plt.plot(xs, cos_values, linestyle='solid', label=label)
+            # plot lines
+            plt.plot(self.xs, self.cos_values, linestyle='solid', label=label)
             print("Plotting complete")
 
-        plotter_to_work.savefig("{file_name}.png".format(file_name=file_name))
+        # save png
+        plot.savefig("{file_name}.png".format(file_name=file_name))
         print("Saving complete")
 
-        # should be done normally ...once...
         if discrete:
-            write_to_csv("pointsFile", data_list)
-            print("Number of samples = {n_sample}".format(
-                n_sample=len(cos_values)))
+            write_to_csv("pointsFile", self.xs, self.cos_values)
 
-            # i will somehow make a separate function, maybe
+            print("\n...counting some results")
+            print("Number of samples = {n_sample}".format(
+                n_sample=len(self.cos_values)))
+
             print("Zero point = {cos_point_zero}".format(
-                cos_point_zero=self.amplitude * math.cos(
-                    2 * math.pi * 0 * self.frequency + math.pi *
-                    self.init_phase / 180) + self.bias))
+                cos_point_zero=zero_signal(self.amplitude, self.frequency,
+                                           self.init_phase, self.bias)))
+            print(avg_counter(self.cos_values))

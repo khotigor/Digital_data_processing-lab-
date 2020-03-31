@@ -1,3 +1,5 @@
+import math
+
 DPI = 80
 T_MATH = 0.1
 T_BUILD = T_MATH * 0.005
@@ -7,3 +9,6 @@ FREQUENCY = 28076.17188
 INITIAL_PHASE = 130
 SAMPLING = 100000
 NOISE_RATIO_SIGMA = 0.5
+
+SNR = 13
+A_NOISE = 1 / (math.pow(10, (float(SNR) / 20)))  # root mean square of noise
