@@ -1,6 +1,7 @@
 from functions import *
 from values import *
 
+
 class Signal(object):
     """It's my signal"""
 

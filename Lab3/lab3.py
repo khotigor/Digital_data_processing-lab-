@@ -27,8 +27,8 @@ avg_cos = avg_counter(signal.cos_values)
 res_cos_values = []
 for i in range(len(signal.cos_values)):
     res_cos_values.append(
-        [float(signal.cos_values[i]) + A_NOISE * float(
-            noise.cos_values[i]) - avg_cos])
+        float(signal.cos_values[i]) + A_NOISE * float(
+            noise.cos_values[i]) - avg_cos)
 print("Counting compete")
 
 # plot a part of signal with noise
