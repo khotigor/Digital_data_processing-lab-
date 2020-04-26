@@ -18,6 +18,16 @@ def write_to_csv(file_name, column_1, column_2):
     print("Writing complete")
 
 
+# read from cvs
+def read_from_csv(file_name):
+    with open("{file_name}.csv".format(file_name=file_name), "r") as f:
+        reader = csv.reader(f)
+        res = []
+        for row in reader:
+            res.append(row)
+    return res
+
+
 # creating a plotter
 def plotter(dpi, time_build, name, x_label, y_label, min_plt, max_plt):
     plot = plt.figure(dpi=dpi, figsize=(1080 / dpi, 720 / dpi))
@@ -50,3 +60,11 @@ def zero_signal(amplitude, frequency, init_phase, bias):
 # average of list
 def avg_counter(list_in):
     return sum(list_in) / len(list_in)
+
+
+# parser get i list from list of list
+def parser(list_to_parse, num):
+    res = []
+    for list_from_list_to_parse in list_to_parse:
+        res.append(float(list_from_list_to_parse[num]))
+    return res
