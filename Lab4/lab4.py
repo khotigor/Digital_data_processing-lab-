@@ -48,11 +48,11 @@ plt.axis([round(FREQUENCY, -1)-1000, round(FREQUENCY, -1)+1000, - 0.02, 0.55])
 plot_signal.savefig('signal_small.png')
 
 
-plot_noise = plotter_fft(DPI, freq, fft_noise, 'Signal amplitude noise',
+plot_noise = plotter_fft(DPI, freq, fft_noise, 'Noise amplitude spectrum',
                          'f, HZ', 'U, V')
 plot_noise.savefig('noise.png')
 
-plot_sum = plotter_fft(DPI, freq, fft_sum, 'Signal amplitude signal+moise',
+plot_sum = plotter_fft(DPI, freq, fft_sum, 'Signal+moise amplitude spectrum',
                        'f, HZ', 'U, V')
 plot_sum.savefig('sum.png')
 plt.axis([round(FREQUENCY, -1)-1000, round(FREQUENCY, -1)+1000, - 0.02, 0.55])
