@@ -2,6 +2,7 @@ import math
 import random
 import csv
 import matplotlib.pyplot as plt
+import numpy as np
 from SignalClass import *
 from values import *
 
@@ -26,6 +27,18 @@ def read_from_csv(file_name):
         for row in reader:
             res.append(row)
     return res
+
+
+# creating a plotter for fft
+def plotter_fft(dpi, arr_x, arr_y, title, x_label, y_label):
+    plot = plt.figure(dpi=dpi, figsize=(1080 / dpi, 720 / dpi))
+    plt.plot(arr_x, np.abs(arr_y) / 10000, linestyle='solid',
+             label='a')
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.grid()
+    return plot
 
 
 # creating a plotter

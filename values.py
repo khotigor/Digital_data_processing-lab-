@@ -11,4 +11,5 @@ SAMPLING = 100000
 NOISE_RATIO_SIGMA = 0.5
 
 SNR = 13
-A_NOISE = 1 / (math.pow(10, (float(SNR) / 20)))  # root mean square of noise
+A_NOISE = float(
+    1.4 / (math.pow(10, (float(SNR) / 20))))  # root mean square of noise
