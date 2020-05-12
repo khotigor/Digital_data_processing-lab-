@@ -24,9 +24,6 @@ fft_sum = np.fft.fft(list_sum)
 
 freq = np.fft.fftfreq(10000, 0.00001)
 
-print(len(freq))
-print(len(fft_signal))
-
 w_plus = 0
 w_minus = 0
 for i in range(len(freq)):
@@ -38,15 +35,19 @@ for i in range(len(freq)):
         print("Reference number -w: {w}".format(w=w_minus))
 
 power_signal = (np.abs(fft_sum[1000]) ** 2 + np.abs(fft_sum[w_minus]) ** 2)
-snr = power_signal*35 / (sum([i ** 2 for i in np.abs(fft_sum)]) - power_signal)
+snr = power_signal / (sum([i ** 2 for i in np.abs(fft_sum)]) - power_signal)
 print("SNR: {snr}".format(snr=snr))
+if not SNR * 0.8 > snr > SNR * 1.2:
+    print(
+        "The value does not agree with the theoretical. The reason may be" +
+        "in the normal distribution and the numpy library (fft function)")
 
 plot_signal = plotter_fft(DPI, freq, fft_signal, 'Signal amplitude spectrum',
                           'f, HZ', 'U, V')
 plot_signal.savefig('signal.png')
-plt.axis([round(FREQUENCY, -1)-1000, round(FREQUENCY, -1)+1000, - 0.02, 0.55])
+plt.axis(
+    [round(FREQUENCY, -1) - 1000, round(FREQUENCY, -1) + 1000, - 0.02, 0.55])
 plot_signal.savefig('signal_small.png')
-
 
 plot_noise = plotter_fft(DPI, freq, fft_noise, 'Noise amplitude spectrum',
                          'f, HZ', 'U, V')
@@ -55,9 +56,6 @@ plot_noise.savefig('noise.png')
 plot_sum = plotter_fft(DPI, freq, fft_sum, 'Signal+moise amplitude spectrum',
                        'f, HZ', 'U, V')
 plot_sum.savefig('sum.png')
-plt.axis([round(FREQUENCY, -1)-1000, round(FREQUENCY, -1)+1000, - 0.02, 0.55])
+plt.axis(
+    [round(FREQUENCY, -1) - 1000, round(FREQUENCY, -1) + 1000, - 0.02, 0.55])
 plot_sum.savefig('sum_small.png')
-
-
-
-
