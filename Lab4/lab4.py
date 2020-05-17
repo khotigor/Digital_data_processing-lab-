@@ -34,7 +34,20 @@ for i in range(len(freq)):
         w_minus = i
         print("Reference number -w: {w}".format(w=w_minus))
 
-power_signal = (np.abs(fft_sum[1000]) ** 2 + np.abs(fft_sum[w_minus]) ** 2)
+# Does not work..(
+# power_signal = (np.abs(fft_sum[1000]) ** 2 + np.abs(fft_sum[w_minus]) ** 2)
+# print("Power")
+# print(power_signal)
+
+print("\nDoubled sum of squares 2805 ... 2812 samples is a power:")
+i = 2805
+power_signal = 0
+while i <= 2812:
+    power_signal = power_signal + pow(np.abs(fft_sum[i]), 2)
+    i = i + 1
+power_signal = power_signal * 2
+print("{power} \n".format(power=power_signal))
+
 snr = power_signal / (sum([i ** 2 for i in np.abs(fft_sum)]) - power_signal)
 print("SNR: {snr}".format(snr=snr))
 if not SNR * 0.8 > snr > SNR * 1.2:
@@ -59,3 +72,10 @@ plot_sum.savefig('sum.png')
 plt.axis(
     [round(FREQUENCY, -1) - 1000, round(FREQUENCY, -1) + 1000, - 0.02, 0.55])
 plot_sum.savefig('sum_small.png')
+
+print("\nThe sum of the squares of all samples in the amplitude spectrum of" +
+      "the signal + noise mixture:")
+sum_fft_sum = 0
+for i in range(len(fft_sum)):
+    sum_fft_sum = sum_fft_sum + pow(np.abs(fft_sum[i]), 2)
+print(sum_fft_sum)
