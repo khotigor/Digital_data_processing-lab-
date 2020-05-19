@@ -48,7 +48,9 @@ while i <= 2812:
 power_signal = power_signal * 2
 print("{power} \n".format(power=power_signal))
 
-snr = power_signal / (sum([i ** 2 for i in np.abs(fft_sum)]) - power_signal)
+snr = 10 * math.log(
+    (power_signal / (sum([i ** 2 for i in np.abs(fft_sum)]) - power_signal)),
+    10)
 print("SNR: {snr}".format(snr=snr))
 if not SNR * 0.8 > snr > SNR * 1.2:
     print(
