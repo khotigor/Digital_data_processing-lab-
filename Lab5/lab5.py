@@ -1,9 +1,10 @@
 from scipy.io import wavfile
-import matplotlib.pyplot as plt
-import numpy as np
-import math
 from scipy import signal
-import scipy
+
+import sys
+
+sys.path.append('../')
+from SignalClass import *
 
 audiofile = 'sample13.wav'
 
@@ -29,31 +30,24 @@ plt.close()
 
 subcarrier_frequency = 44000
 
-# filter additive component
 b, a = signal.butter(10, 20000, btype='lowpass', fs=rate)
 additive_component = signal.filtfilt(b, a, data)
 
-# filter difference component
 b, a = signal.butter(10, 20000, btype='highpass', fs=rate)
 difference_component = signal.filtfilt(b, a, data)
 
-plt.plot(freq1, np.abs(np.fft.fft(additive_component)))
-plt.xlabel(u'frequency Hz')
-plt.ylabel(u'Amplitude')
-plt.title(u'Amplitude spectrum of the additive signal component')
-plt.grid(True)
-plt.savefig(fname='graphics/3', fmt='png')
-plt.close()
+amplitude_spectrum_3 = plotter_fft(DPI, freq1,
+                                 np.abs(np.fft.fft(additive_component)),
+                                 'Amplitude spectrum of the additive signal component',
+                                 'frequency, HZ', 'Amplitude')
+amplitude_spectrum_3.savefig('graphics/3.png')
 
-plt.plot(freq1, np.abs(np.fft.fft(difference_component)))
-plt.xlabel(u'frequency Hz')
-plt.ylabel(u'Amplitude')
-plt.title(u'Amplitude spectrum of the signal difference component')
-plt.grid(True)
-plt.savefig(fname='graphics/4', fmt='png')
-plt.close()
+amplitude_spectrum_4 = plotter_fft(DPI, freq1,
+                                 np.abs(np.fft.fft(difference_component)),
+                                 'Amplitude spectrum of the signal difference component',
+                                 'frequency, HZ', 'Amplitude')
+amplitude_spectrum_4.savefig('graphics/4.png')
 
-# demodulate difference component of the signal
 t = 0
 for i in range(0, len(difference_component)):
     difference_component[i] = difference_component[i] * math.cos(
